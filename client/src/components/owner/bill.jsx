@@ -128,12 +128,7 @@ handleDelete=()=>{
   render(){
    
     console.log(this.props.bill.msg)
-    if(this.props.bill.msg!==''){
-          successMsg(this.props.bill.msg)
-        }
-        if(this.props.bill.error!==''){
-              errorMsg(this.props.bill.error)
-            }
+    
     const {bill} =this.props.bill
     console.log(bill)
       const Bill =
