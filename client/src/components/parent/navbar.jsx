@@ -84,7 +84,7 @@ class Navbar extends Component {
             <div class="menu-sidebar__content js-scrollbar1 ps">
             <div class="account2">
                     <div class="image img-cir img-120">
-                        <img src={kR} alt="John Doe"/>
+                        <img src={decode.image} alt="John Doe"/>
                     </div>
                     <h4 class="name">{decode.name}</h4>
                     <Link onClick={this.logOut}><i className='fa fa-sign-out-alt'/> Log Out</Link>

@@ -14,7 +14,7 @@ import getResult from './getResult'
 import getReceipt from './getReceipt'
 import getProducts from './getProduct'
 import productDetail from './productDetail'
-import percentage from './percentage'
+import SchoolData from './schoolData'
 export default combineReducers({
   teachers:getTeachers,
   students:getStudents,
@@ -31,5 +31,5 @@ export default combineReducers({
   receipt: getReceipt,
   products:getProducts,
   product:productDetail,
-  percentage
+  school:SchoolData
 })

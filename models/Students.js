@@ -7,7 +7,9 @@ const StudentSchema = new mongoose.Schema({
   type:{
     type:String
   },
-
+image:{
+  type:String
+},
   surname: {
     type: String
   },

@@ -31,7 +31,7 @@ class Topbar extends Component{
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image ">
-                                            <img src={kR} alt="John Doe"/>
+                                            <img src={decode.image} alt="John Doe"/>
                                         </div>
                                         <div class="content">
                                             <Link class="js-acc-btn" to="#">{decode.surname+' '+decode.name}</Link>
@@ -40,7 +40,7 @@ class Topbar extends Component{
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <Link to="#">
-                                                        <img src={kR} alt="John Doe"/>
+                                                        <img src={decode.image} alt="John Doe"/>
                                                     </Link>
                                                 </div>
                                                 <div class="content">

@@ -55,6 +55,79 @@ export const TeachersList=({teachers,loading,search,update,info})=> {
     </div>
     )
   }
+  export const teacherStudentsList=({students,loading,search,info})=>{
+    return (
+          <div class="card-body">
+            <div class="table-responsive">
+              <div class="row">
+              <div class="col-sm-12">
+            <input class="form-control" onChange={search} id="myInput" type="text" placeholder="Search.."/>
+  <br/>
+      <table class="table table-bordered" id='myTable2'>
+      <thead>
+        <tr>
+          <th onclick='sortTable(0)'>Name<i onclick='sortTable()' className='fa text-dark fa-fw fa-angle-down'/></th>
+          <th onclick='sortTable(1)'>Surname</th>
+          <th onclick='sortTable(2)'>Class</th>
+          <th onclick='sortTable(3)'>Gender</th>
+          <th onclick='sortTable(4)'>Age</th>
+          <th onclick='sortTable(5)'>Religion</th>
+        </tr>
+      </thead>
+      <tbody id='myTable'>
+        {
+        students.length ? (
+          students.map((student) => {
+            return (
+              <tr className="odd" key={student._id}>
+                <td>
+                  <div className="dropdown">
+                    <Link
+                      className="text-secondary nav-link dropdown-toggle"
+                      id="navbardrop"
+                      to="#"
+                      data-toggle="dropdown"
+                    >
+                      {" "}
+                      {student.name}
+                    </Link>
+                    <div className="dropdown-menu">
+                      <Link
+                        className="text-secondary dropdown-item"
+                        onClick={()=>info(student.student_id)}
+                      >
+                        {" "}
+                        view Child's Info
+                      </Link>
+                      <Link to={'/1stterm/'+student.student_id} className='text-secondary dropdown-item'>1st Term Result</Link>
+                      <Link to={'/2ndterm/'+student.student_id} className='text-secondary dropdown-item'>2nd Term Result</Link>
+                      <Link to={'/3rdterm/'+student.student_id} className='text-secondary dropdown-item'>3rd Term Result</Link>
+                    </div>
+                  </div>
+                </td>
+                <td>{student.surname}</td>
+                  <td>{student.clas}</td>
+                  <td>{student.gender}</td>
+                  <td className='sorting_1'>{student.age}</td>
+                  <td>{student.religion}</td>
+              </tr>
+            );
+          })
+        ) : (
+          <tr class="odd">
+            <td valign="top" colspan="6" class="dataTables_empty">
+              No data available in table
+            </td>
+          </tr>
+    )}
+      </tbody>
+    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+    );
+  }  
 export const StudentsList=({students,loading,search,update,info})=>{
     return (
         <>
@@ -172,7 +245,7 @@ export const StudentInformation=({student,toggle,state})=>{
                                   <section class="card">
                                       <div class="card-header user-header alt bg-dark">
                                           <div class="media">
-                                                  <img class="align-self-center rounded-circle mr-3" style={{width:'85px', height:'85px'}} alt="" src={kR}/>
+                                                  <img class="align-self-center rounded-circle mr-3" style={{width:'85px', height:'85px'}} alt="" src={state.image}/>
                                               <div class="media-body">
                                                   <h2 class="text-light display-6">{student.surname+' '+student.name}</h2>
                                                   <p class="text-light">{student.clas}</p>
@@ -287,7 +360,7 @@ export const TeacherInformation=({teacher,toggle,state})=>{
                               <section class="card">
                                       <div class="card-header user-header alt bg-dark">
                                           <div class="media">
-                                                  <img class="align-self-center rounded-circle mr-3" style={{width:'85px', height:'85px'}} alt="" src={kR}/>
+                                                  <img class="align-self-center rounded-circle mr-3" style={{width:'85px', height:'85px'}} alt="" src={teacher.image}/>
                                               <div class="media-body">
                                                   <h2 class="text-light display-6">{teacher.surname+' '+teacher.name}</h2>
                                                   <p class="text-light">{teacher.clas}</p>

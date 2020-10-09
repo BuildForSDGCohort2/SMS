@@ -405,7 +405,7 @@ import {
       </Modal>
       )
   }
-export const RegisterStudent=({submit,toggle,clas,change,department,state,msg})=> {
+export const RegisterStudent=({submit,toggle,clas,change,department,state,msg,upload,image,kR})=> {
   
     return(
             
@@ -437,7 +437,20 @@ export const RegisterStudent=({submit,toggle,clas,change,department,state,msg})=
                                    </div>
                                    <form onSubmit={submit} class="form-horizontal">
                                    <div class="card-body card-block">
-
+                                   {
+        (state.image==='no image')?(
+          <div className='form-group'>
+          <img id="image" alt='' src={kR} style={{width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={image}/>
+          <p className='text-center'>Click to Add Student's Image</p>
+          <input onChange={upload} type="file" id="newImage" name='image' style={{display: "none"}}/>
+          </div>
+        ):(
+          <div className='form-group'>
+          <img id="image" alt='' src={state.image} style={{width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={image}/>
+          <input onChange={upload} type="file" id="newImage" name='image' style={{display: "none"}}/>
+          </div>
+        )
+      }
                                            <div class="row form-group">
                                                <div class="col col-md-3">
                                                    <label for="text-input" class=" form-control-label">Name</label>
@@ -638,7 +651,7 @@ export const RegisterStudent=({submit,toggle,clas,change,department,state,msg})=
                                </div>
     )
   }
-  export const UploadNotice=({submit,toggle,change,state})=>{
+  export const UploadNotice=({submit,toggle,change,state,kR,upload,image})=>{
       return(
     <div class="row">
     <div class="col-lg-9 mx-auto">
@@ -663,6 +676,19 @@ Add News/Notice
                           }
 <form onSubmit={submit}>
                                 <div class="form-group">
+                                {(state.image==='no image')?(
+          <div className='form-group'>
+          <img id="image" alt='' src={kR} style={{width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={image}/>
+          <p className='text-center'>Click to Add News/Notice Image</p>
+          <input onChange={upload} type="file" id="newImage" name='image' style={{display: "none"}}/>
+          </div>
+        ):(
+          <div className='form-group'>
+          <img id="image" alt='' src={state.image} style={{width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={image}/>
+          <input onChange={upload} type="file" id="newImage" name='image' style={{display: "none"}}/>
+          </div>
+        )
+      }
                                     <div class="input-group mb-3">
                                         <input onChange={change} type="text" id="text-input" name="title" placeholder="Enter News Title" class="form-control-sm form-control"/>
                                     </div>
@@ -683,7 +709,7 @@ Add News/Notice
   </div>
       )
   }
-  export const RegisterTeacher=({submit,toggle,change,state,msg,error})=>{
+  export const RegisterTeacher=({submit,toggle,change,state,msg,error,upload,image,kR})=>{
     return(
         <div class="row">
         <div class="col-lg-9 mx-auto">
@@ -720,7 +746,19 @@ Add Teacher
                                    </div>
                                    <form onSubmit={submit} class="form-horizontal">
                                    <div class="card-body card-block">
-
+                                   {(state.image==='no image')?(
+          <div className='form-group'>
+          <img id="image" alt='' src={kR} style={{width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={image}/>
+          <p className='text-center'>Click to Add Teacher's Image</p>
+          <input onChange={upload} type="file" id="newImage" name='image' style={{display: "none"}}/>
+          </div>
+        ):(
+          <div className='form-group'>
+          <img id="image" alt='' src={state.image} style={{width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={image}/>
+          <input onChange={upload} type="file" id="newImage" name='image' style={{display: "none"}}/>
+          </div>
+        )
+      }
                                            <div class="row form-group">
                                                <div class="col col-md-3">
                                                    <label for="text-input" class=" form-control-label">Name</label>

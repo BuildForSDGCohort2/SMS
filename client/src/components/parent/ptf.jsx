@@ -56,7 +56,6 @@ componentDidUpdate() {
                         {
                           chat.sender_id!==decode._id ?
                           <div class="avatar avatar--tiny">
-                            <img src={kR} alt="John Smith"/>
                         </div>
                         : null
                         }

@@ -18,6 +18,7 @@ import { getStudents } from "../../actions/ownerActions";
 import PropTypes from 'prop-types'
 import {ptfNotifications} from '../../notification'
 import $ from 'jquery'
+import kR from '../upload.png'
 class Students extends Component {
   state = {
     name:'',
@@ -40,7 +41,8 @@ class Students extends Component {
     modal:false,
     up:false,
     info:false,
-    classChange:false
+    classChange:false,
+    image: 'no image'
   }
   componentDidMount() {
     ptfNotifications()
@@ -81,7 +83,8 @@ class Students extends Component {
       amountPaid:this.state.amountPaid,
       feeStatus:(this.state.amountPaid===classBill.fees)?'paid':'debtor',
       fees:classBill.fees,
-      paidAmount: this.state.amountPaid
+      paidAmount: this.state.amountPaid,
+      image:this.state.image
     }
     this.props.addStudent(student)
     this.handleToggle()
@@ -127,7 +130,8 @@ class Students extends Component {
             psurname:res.data.psurname,
             email:res.data.email,
             number:res.data.number,
-            paddress:res.data.paddress
+            paddress:res.data.paddress,
+            image:res.data.image
           })
         })
     this.props.studentDetail(id)
@@ -194,7 +198,26 @@ class Students extends Component {
   }
     this.props.getStudents()
   }
-
+  imageUpload=()=>{
+    $('#newImage').click()
+  }
+  uploadImage=async e =>{
+    const files = e.target.files
+    const data = new FormData()
+    data.append('file', files[0])
+    data.append('upload_preset', 'jewbreel')
+    this.setState({imageLoading:true})
+    const res = await fetch('https://api.cloudinary.com/v1_1/jewbreel1/image/upload',
+    {
+      method:'POST',
+      body:data
+    }
+    )
+    const file = await res.json()
+    this.setState({image:file.secure_url})
+    this.setState({imageLoading:false})
+    console.log(file.secure_url)
+  }
   render() {
     const { students } = this.props.students;
     const {student} = this.props.student
@@ -228,6 +251,9 @@ class Students extends Component {
             department={this.handleDepartment}
             state={this.state}
             msg={this.props.students.msg}
+            upload={this.uploadImage}
+            image={this.imageUpload}
+            kR={kR}
           />
           <hr/>
           <StudentsList

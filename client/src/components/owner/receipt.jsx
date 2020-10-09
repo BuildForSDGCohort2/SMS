@@ -22,7 +22,7 @@ class Student extends Component {
                 <div class="media">
                         <img class="align-self-center rounded-circle mr-3" style={{width:'85px', height:'85px'}} alt="" src={kR}/>
                     <div class="media-body">
-                        <h2 class="text-light display-6">{decode.name}</h2>
+                        <h2 class="text-light display-6">{decode.schoolName}</h2>
                     </div>
                 </div>
             </div>

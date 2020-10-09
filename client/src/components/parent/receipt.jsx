@@ -21,7 +21,7 @@ class Receipt extends Component {
         <section class="card" key={receipt._id}>
             <div class="card-header user-header alt bg-dark">
                 <div class="media">
-                        <img class="align-self-center rounded-circle mr-3" style={{width:'85px', height:'85px'}} alt="" src={kR}/>
+                        <img class="align-self-center rounded-circle mr-3" style={{width:'85px', height:'85px'}} alt="" src={decode.image}/>
                     <div class="media-body">
                         <h2 class="text-light display-6">{decode.name}</h2>
                     </div>
@@ -79,7 +79,7 @@ class Receipt extends Component {
       <section class="card">
           <div class="card-header user-header alt bg-dark">
               <div class="media">
-                      <img class="align-self-center rounded-circle mr-3" style={{width:'85px', height:'85px'}} alt="" src={kR}/>
+                      <img class="align-self-center rounded-circle mr-3" style={{width:'85px', height:'85px'}} alt="" src={decode.image}/>
                   <div class="media-body">
                       <h2 class="text-light display-6">{decode.name}</h2>
                   </div>

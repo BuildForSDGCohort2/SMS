@@ -3,6 +3,8 @@ import {getStudents,getBill,getTeachers,getStudentBill} from '../../actions/owne
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {ptfNotifications} from '../../notification'
+import kR from '../../unnamed.jpg'
+import jwt_decode from 'jwt-decode'
 class Dashboard extends Component{
   componentDidMount() {
     ptfNotifications()
@@ -12,6 +14,7 @@ class Dashboard extends Component{
     this.props.getStudentBill()
   }
   render(){
+    const decode = jwt_decode(localStorage.token)
     const {students} = this.props.students
     const {studentBill} = this.props.studentBill
     const {teachers} = this.props.teachers
@@ -36,6 +39,10 @@ class Dashboard extends Component{
       <h2 class="title-1">Dashboard</h2>
 
       </div>
+      <div class="image mx-auto d-block img-cir img-120">
+                        <img  src={decode.logo} alt="John Doe"/>
+                    </div>
+            <h1 className='text-center'>{decode.schoolName}</h1>
       </div>
       </div>
       <div class="row m-t-25">

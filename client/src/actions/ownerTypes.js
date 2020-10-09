@@ -1,3 +1,4 @@
+export const SchoolData = 'SchoolData'
 export const Get_Teachers = 'Get_Teachers'
 export const Preview_Teachers = 'Preview_Teachers'
 export const Add_Teacher = 'Add_Teacher'

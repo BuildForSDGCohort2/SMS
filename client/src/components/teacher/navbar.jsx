@@ -32,7 +32,7 @@ class Navbar extends Component {
             </div>
             <div class="account2">
                     <div class="image img-cir img-120">
-                        <img src={kR} alt="John Doe"/>
+                        <img src={decode.image} alt="John Doe"/>
                     </div>
                     <h4 class="name">{decode.name}</h4>
                     <Link onClick={this.logOut}><i className='fa fa-sign-out-alt'/> Log Out</Link>
@@ -58,14 +58,7 @@ class Navbar extends Component {
                                 <Link to="/students">
                                     <i class="fas fa-users"/>All</Link>
                             </li>
-                            <li>
-                                <Link to="/muslims">
-                                    <i class="fas fa-moon-o"/>Muslims</Link>
-                            </li>
-                            <li>
-                                <Link to="/christians">
-                                    <i class="fas fa-plus"/>Christians</Link>
-                            </li>
+                            
                             <li>
                                 <Link to="/debtors">
                                     <i class="fa fa-times"/>Debtors</Link>
@@ -82,11 +75,7 @@ class Navbar extends Component {
                             <i class="fas fa-list-alt"></i>News
                         </Link>
                     </li>
-                    <li class="has-sub">
-                        <Link to="/results">
-                            <i class="fas fa-dedent"></i>Results
-                        </Link>
-                    </li>
+                    
                     <li class="has-sub">
                         <Link to="/ptf">
                             <i class="fas fa-group"></i>PTF
@@ -108,7 +97,7 @@ class Navbar extends Component {
             <div class="menu-sidebar__content js-scrollbar1 ps">
             <div class="account2">
                     <div class="image img-cir img-120">
-                        <img src={kR} alt="John Doe"/>
+                        <img src={decode.image} alt="John Doe"/>
                     </div>
                     <h4 class="name">{decode.name}</h4>
                     <Link onClick={this.logOut}><i className='fa fa-sign-out-alt'/> Log Out</Link>
@@ -133,14 +122,7 @@ class Navbar extends Component {
                             <Link to="/students">
                                 <i class="fas fa-users"/>All</Link>
                         </li>
-                        <li>
-                            <Link to="/muslims">
-                                <i class="fas fa-moon-o"/>Muslims</Link>
-                        </li>
-                        <li>
-                            <Link to="/christians">
-                                <i class="fas fa-plus"/>Christians</Link>
-                        </li>
+                        
                         <li>
                             <Link to="/debtors">
                                 <i class="fa fa-times"/>Debtors</Link>
@@ -157,11 +139,7 @@ class Navbar extends Component {
                         <i class="fas fa-list-alt"></i>News
                     </Link>
                 </li>
-                <li class="has-sub">
-                    <Link to="/results">
-                        <i class="fas fa-dedent"></i>Results
-                    </Link>
-                </li>
+                
                 <li class="has-sub">
                     <Link to="/ptf">
                         <i class="fas fa-group"></i>PTF

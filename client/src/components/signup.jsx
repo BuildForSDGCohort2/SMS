@@ -6,6 +6,7 @@ import {teacherAccount} from '../actions/teacherActions'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import kR from './upload.png'
+import {RegClasses,States} from '../classes'
 import $ from 'jquery'
 class SignUp extends Component {
   state={
@@ -20,8 +21,19 @@ class SignUp extends Component {
     status:'',
     clas:'',
     teacher_id:'',
-    name:'',
-    image:'no image'
+    schoolName:'',
+    image:'no image',
+    logo:'no logo',
+    schoolEmail:'',
+    address:'',
+    state:'',
+    lga:'',
+    firstName:'',
+    lastName:'',
+    ownerEmail:'',
+    number:'',
+    confirmPassword:'',
+    passwordError:''
   }
   handleChange=e=>{
     this.setState({[e.target.name]:e.target.value})
@@ -32,11 +44,46 @@ class SignUp extends Component {
     const {teacher} = this.props.teacher
     console.log(teacher)
   }
+  handlePassword=e=>{
+    this.setState({confirmPassword:e.target.value})
+    if(e.target.value !== this.state.password){
+      this.setState({passwordError:'Passwords do not match'})
+    }
+    else if(e.target.value === this.state.password){
+      this.setState({passwordError:''})
+    }
+    else if((e.target.value && this.state.password) === ''){
+      this.setState({passwordError:''})
+    }
+  }
   handleSubmit=(e)=>{
+    const {email,
+    type,
+    surname,
+    student_id,
+    password,
+    reg,
+    msg,
+    error,
+    status,
+    clas,
+    teacher_id,
+    schoolName,
+    image,
+    logo,
+    schoolEmail,
+    address,
+    state,
+    lga,
+    firstName,
+    lastName,
+    ownerEmail,
+    number,
+    confirmPassword
+  } = this.state
       e.preventDefault()
       const {teacher} = this.props.teacher
       const {student} = this.props.student
-      console.log(teacher.teacher_id, this.state.teacher_id)
       const user = this.state.type==='teacher' ?(
       this.state.teacher_id===teacher.teacher_id ?
       {password:this.state.password}
@@ -51,9 +98,19 @@ class SignUp extends Component {
       ):
       this.state.type==='owner' ?
       {
-         name:this.state.name,
-         email:this.state.email,
-         password:this.state.password
+        password,
+        clas,
+        schoolName,
+        image,
+        logo,
+        schoolEmail,
+        address,
+        state,
+        lga,
+        firstName,
+        lastName,
+        ownerEmail,
+        number
       }
       :
       null
@@ -76,6 +133,7 @@ class SignUp extends Component {
       axios.post('/owner/signup',user)
        .then(res=>{this.setState({status:res.data})})
       this.props.history.push('/')
+      // console.log(user)
     }
   }
   handleId=e=>{
@@ -101,15 +159,15 @@ class SignUp extends Component {
   guardian=e=>{
     this.setState({error:'',reg:false,type:'guardian'})
   }
-  uploadFile=()=>{
-  $('#newImage').click()
+  logoUpload=()=>{
+  $('#newLogo').click()
 }
-uploadImage=async e =>{
+uploadLogo=async e =>{
   const files = e.target.files
   const data = new FormData()
   data.append('file', files[0])
   data.append('upload_preset', 'jewbreel')
-  this.setState({loading:true})
+  this.setState({logoLoading:true})
   const res = await fetch('https://api.cloudinary.com/v1_1/jewbreel1/image/upload',
   {
     method:'POST',
@@ -117,17 +175,40 @@ uploadImage=async e =>{
   }
   )
   const file = await res.json()
-  this.setState({image:file.secure_url,name:file.secure_url})
-  this.setState({loading:false})
+  this.setState({logo:file.secure_url})
+  this.setState({logoLoading:false})
+  console.log(file.secure_url)
+}
+imageUpload=()=>{
+  $('#newImage').click()
+}
+uploadImage=async e =>{
+  const files = e.target.files
+  const data = new FormData()
+  data.append('file', files[0])
+  data.append('upload_preset', 'jewbreel')
+  this.setState({imageLoading:true})
+  const res = await fetch('https://api.cloudinary.com/v1_1/jewbreel1/image/upload',
+  {
+    method:'POST',
+    body:data
+  }
+  )
+  const file = await res.json()
+  this.setState({image:file.secure_url})
+  this.setState({imageLoading:false})
   console.log(file.secure_url)
 }
   render(){
     return(
       <div class="row mt-5">
-      <div class="col-md-6 mx-auto">
+      <div class={"mx-auto " + (this.state.type==='owner' ? 'col-md-8' : 'col-md-6')}>
       <div class="card container">
-      <div className='card-body'>
+      <div className='card-header mt-4'>
       <h1 class="text-center mb-3"><i class="fas fa-user-plus"></i> Register</h1>
+      </div>
+
+      <div className='card-body'>
       </div>
       {
       (this.state.status!=='')?(
@@ -143,38 +224,143 @@ uploadImage=async e =>{
       {
         this.state.type==='owner' ?
         <form noValidate onSubmit={this.handleSubmit}>
+        <div className='row'>
+        <div className='col border-right border-bottom mb-2'>
+
         {
+        (this.state.logo==='no logo')?(
+          <div className='form-group'>
+          <img id="image" alt='' src={kR} style={{width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={this.logoUpload}/>
+          <p className='text-center'>Click to Add School Logo</p>
+          <input onChange={this.uploadLogo} type="file" id="newLogo" name='image' style={{display: "none"}}/>
+          </div>
+        ):(
+          <div className='form-group'>
+          <img id="image" alt='' src={this.state.logo} style={{width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={this.logoUpload}/>
+          <input onChange={this.uploadLogo} type="file" id="newLogo" name='image' style={{display: "none"}}/>
+          </div>
+        )
+      }
+        <div class="form-group">
+        <label for="schoolName">School Name</label>
+        <input class="form-control"
+         id="schoolName"
+          type="text"
+           name="schoolName"
+            placeholder="Enter Name"
+            value={this.state.schoolName}
+            onChange={this.handleChange}/>
+      </div>
+        <div class="form-group">
+        <label for="schoolEmail">School's Email</label>
+        <input class="form-control"
+         id="schoolEmail"
+          type="email"
+           name="schoolEmail"
+            placeholder="Enter Email"
+            onChange={this.handleChange}/>
+      </div>
+      <div class="form-group">
+        <label for="address">School's Address</label>
+        <input class="form-control"
+         id="address"
+          type="text"
+           name="address"
+            placeholder="School's Address"
+            onChange={this.handleChange}/>
+      </div>
+      <div className='form-group'>
+        <label>School System</label>
+        <select className='form-control' onChange={this.handleChange} name='clas'>
+          <option>Select Class System</option>
+          <option>Both</option>
+          <option>Primary</option>
+          <option>Secondary</option>
+        </select>
+      </div>
+      <div className='form-group'>
+        <label>
+          State
+        </label>
+        <select onChange={this.handleChange} name='state' className='form-control'>
+        <option>Select State</option>
+                                                       {
+                                                           States.map(state=>{
+                                                               return(
+                                                                   <option>{state.name}</option>
+                                                               )
+                                                           })
+                                                       }
+                                                   </select>
+      </div>
+      <div>
+        <label>LGA</label>
+        <input className='form-control' type='text'
+          name='lga'
+          placeholder='Local Government Area'
+          onChange={this.handleChange}
+        />
+      </div>
+          </div>
+          <div className='col border-left border-bottom mb-2'>
+          {
         (this.state.image==='no image')?(
           <div className='form-group'>
-          <img id="image" alt='' src={kR} style={{borderRadius:"50%",width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={this.uploadFile}/>
-          <p className='text-center'>Click to Add School Logo</p>
+          <img id="image" alt='' src={kR} style={{width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={this.imageUpload}/>
+          <p className='text-center'>Click to Add Profile Image</p>
           <input onChange={this.uploadImage} type="file" id="newImage" name='image' style={{display: "none"}}/>
           </div>
         ):(
           <div className='form-group'>
-          <img id="image" alt='' src={this.state.image} style={{borderRadius:"50%",width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={this.uploadFile}/>
+          <img id="image" alt='' src={this.state.image} style={{width:'100px',height:'100px'}} className='mx-auto d-block rounded-circle img-fluid' onClick={this.imageUpload}/>
           <input onChange={this.uploadImage} type="file" id="newImage" name='image' style={{display: "none"}}/>
           </div>
         )
       }
         <div class="form-group">
-        <label for="name">School Name</label>
+        <label for="firstName">First Name</label>
         <input class="form-control"
-         id="name"
+         id="firstName"
           type="text"
-           name="name"
-            placeholder="Enter Name"
-            value={this.state.name}
+           name="firstName"
+            placeholder="First Name"
+            value={this.state.firstName}
             onChange={this.handleChange}/>
       </div>
         <div class="form-group">
-        <label for="email">School's Email</label>
+        <label for="lastName">Last Name</label>
         <input class="form-control"
-         id="email"
+         id="lastName"
+          type="text"
+           name="lastName"
+            placeholder="Last Name"
+            value={this.state.lastName}
+            onChange={this.handleChange}/>
+      </div>
+        <div class="form-group">
+        <label for="ownerEmail">Owner's Email</label>
+        <input class="form-control"
+         id="ownerEmail"
           type="email"
-           name="email"
+           name="ownerEmail"
             placeholder="Enter Email"
             onChange={this.handleChange}/>
+      </div>
+      <div class="form-group">
+        <label for="number">Mobile Number</label>
+        <div className='input-group'>
+        <div className='input-group-prepend'>
+        <span className='input-group-text'>
+        <i className='fa fa-phone'/>(+234)
+        </span>
+        </div>
+        <input class="form-control"
+         id="number"
+          type="number"
+           name="number"
+            placeholder="Mobile Number"
+            onChange={this.handleChange}/>
+        </div>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
@@ -185,7 +371,28 @@ uploadImage=async e =>{
             placeholder="Create Password"
             onChange={this.handleChange}/>
       </div>
+      <div class="form-group">
+        <label for="confirmPassword">confirm Password</label>
+        <input class="form-control"
+         id="confirmPassword"
+          type="password"
+           name="confirmPassword"
+            placeholder="Confirm Password"
+            onChange={this.handlePassword}/>
+      </div>
+      {
+        this.state.passwordError !=='' ?
+      <p className='text-sm-center text-white bg-danger'>{this.state.passwordError}</p>
+        : null
+      }
+          </div>
+        </div>
+        {
+          this.state.password !== this.state.confirmPassword ? 
+          <button class="btn btn-primary btn-block" disabled type="submit" value="Register">Register →</button>
+          :
           <button class="btn btn-primary btn-block" type="submit" value="Register">Register →</button>
+        }
         </form>
         :
         this.state.type==='teacher' ?
@@ -196,25 +403,7 @@ uploadImage=async e =>{
                 <label for="selectSm" class=" form-control-label">Class</label>
             </div>
             <div class="col-12 col-md-9">
-                <select name="clas" onChange={this.handleClass} id="SelectLm" class=" form-control">
-                    <option>Please select</option>
-                    <option>Creche</option>
-                    <option>KG1</option>
-                    <option>KG2</option>
-                    <option>NUR1</option>
-                    <option>NUR2</option>
-                    <option>Basic1</option>
-                    <option>Basic2</option>
-                    <option>Basic3</option>
-                    <option>Basic4</option>
-                    <option>Basic5</option>
-                    <option>Jss1</option>
-                    <option>Jss2</option>
-                    <option>Jss3</option>
-                    <option>Sss1</option>
-                    <option>Sss2</option>
-                    <option>Sss3</option>
-                </select>
+                <RegClasses clas={this.handleClass}/>
             </div>
         </div>
         {

@@ -40,9 +40,18 @@ import {
   GetProducts,
   ProductDetail,
   DeleteItem,
-  AddItem
+  AddItem,
+  SchoolData
 } from './ownerTypes'
 import axios from 'axios'
+export const getSchool=()=>dispatch=>{
+  dispatch(setLoading())
+  axios.get('/owner/')
+    .then(res=>dispatch({
+      type: SchoolData,
+      payload:res.data
+    }))
+}
 export const getTeachers = () => (dispatch) => {
     dispatch(setLoading());
     axios
@@ -111,7 +120,7 @@ export const teacherDetail = (id) => (dispatch) => {
       .then(res =>
         dispatch({
           type: Add_Teacher,
-          payload: res.data,
+          payload: res.data.teacher,
           msg:res.data.msg,
           error:res.data.error
         })

@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import {ptfNotifications} from '../../notification'
 import $ from 'jquery'
 import axios from 'axios'
+import kR from '../upload.png'
 class Teachers extends Component {
   componentDidMount() {
     ptfNotifications()
@@ -23,7 +24,8 @@ class Teachers extends Component {
     number:'',
     modal:false,
     up:false,
-    info:false
+    info:false,
+    image: 'no image'
   }
 
   handleChange=e=>{
@@ -47,6 +49,7 @@ class Teachers extends Component {
     }
   this.props.addTeacher(teacher)
   this.handleToggle()
+  this.props.getTeachers()
   const save = this.props.teachers
     if((save.msg !== '') && (save.error === '')){
       this.setState({
@@ -118,6 +121,26 @@ class Teachers extends Component {
     this.props.getTeachers()
     this.updateModal()
 }
+imageUpload=()=>{
+  $('#newImage').click()
+}
+uploadImage=async e =>{
+  const files = e.target.files
+  const data = new FormData()
+  data.append('file', files[0])
+  data.append('upload_preset', 'jewbreel')
+  this.setState({imageLoading:true})
+  const res = await fetch('https://api.cloudinary.com/v1_1/jewbreel1/image/upload',
+  {
+    method:'POST',
+    body:data
+  }
+  )
+  const file = await res.json()
+  this.setState({image:file.secure_url})
+  this.setState({imageLoading:false})
+  console.log(file.secure_url)
+}
   render() {
     const {teachers} = this.props.teachers
     const {teacher} =this.props.teacher
@@ -129,7 +152,18 @@ class Teachers extends Component {
        Teacher's List
        </h4>
     </div>
-          <br/><hr/>
+          <br/>
+            {
+              this.props.teachers.msg ? <div className='alert alert-success alert-dismissible'>
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              {this.props.teachers.msg}</div> : null
+            }
+            {
+              this.props.teachers.error ? <div className='alert alert-danger alert-dismissible'>
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              {this.props.teachers.error}</div> : null
+            }
+          <hr/>
           <UpdateTeacher 
             submit={this.handleUpdate}
             toggle={this.updateModal} 
@@ -151,6 +185,9 @@ class Teachers extends Component {
             state={this.state}
             msg={this.props.teachers.msg}
             error={this.props.teachers.error}
+            upload={this.uploadImage}
+            image={this.imageUpload}
+            kR={kR}
           />
           <hr/>
           <TeachersList

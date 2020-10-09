@@ -17,6 +17,13 @@ const Chat = require('../models/Chat')
 const Receipt = require('../models/Receipt')
 const Product = require('../models/Product')
 const Cart = require('../models/Cart')
+router.get('/',(req,res)=>{
+  const decode = jwt.verify(req.headers['authorization'],key)
+  User.findOne({school_id:decode.school_id})
+    .then(user=>{
+      res.json(user)
+    })
+})
 router.get('/products', (req,res)=>{
   const decode = jwt.verify(req.headers['authorization'],key)
   Product.find({category:'General', category:decode.clas, school_id:decode.school_id})
@@ -131,7 +138,8 @@ router.post('/student',async(req,res)=>{
     paddress:req.body.paddress,
     age:age,
     type:'student',
-    signup:false
+    signup:false,
+    image:req.body.image
   })
   var d = new Date();
   var day = d.getDate()
@@ -194,7 +202,8 @@ router.post('/teacher',async(req,res)=>{
     email:req.body.email,
     number:req.body.number,
     type:'teacher',
-    signup: false
+    signup: false,
+    image: req.body.image
   })
   Teacher.findOne({
     clas:req.body.clas,
@@ -203,7 +212,7 @@ router.post('/teacher',async(req,res)=>{
     .then(teacher=>{
         if(!teacher){
             Teacher.create(newTeacher)
-                .then(teacher => res.json({msg:teacher.surname+' '+teacher.name+"'s Registration Successfully Completed"}))
+                .then(teacher => res.json({msg:teacher.surname+' '+teacher.name+"'s Registration Successfully Completed",teacher}))
                 .catch(err => res.status(400).json('Error: ' + err))
         }else{
             res.json({error:'A Teacher Has been Placed in '+teacher.clas})
@@ -433,23 +442,48 @@ router.get('/3rdtermresult/:student_id', (req,res)=>{
 
 router.post('/signup', async(req,res)=>{
   const today = new Date()
+  const {
+    password,
+    clas,
+    schoolName,
+    image,
+    logo,
+    schoolEmail,
+    address,
+    state,
+    lga,
+    firstName,
+    lastName,
+    ownerEmail,
+    number
+  } = req.body
   var skul = await User.find()
   var school = Number(skul.length) + 1
   var school_id = 'SCH_0'+school
   const userData ={
-      name:req.body.name,
-      email:req.body.email,
-      password:req.body.password,
+    password,
+    clas,
+    schoolName,
+    image,
+    logo,
+    schoolEmail,
+    address,
+    state,
+    lga,
+    firstName,
+    lastName,
+    ownerEmail,
+    number,
       school_id:school_id,
       created:today,
       type:'owner'
   }
   User.findOne({
-      email:req.body.email
+      schoolEmail
   })
       .then(user=>{
           if(!user){
-              bcrypt.hash(req.body.password,10,(err,hash)=>{
+              bcrypt.hash(password,10,(err,hash)=>{
                   userData.password=hash
                   User.create(userData)
                       .then(user=>{
@@ -469,16 +503,45 @@ router.post('/signup', async(req,res)=>{
 })
 
 router.post('/login',(req,res)=>{
-  User.findOne({email:req.body.email})
+  User.findOne({schoolEmail:req.body.schoolEmail})
       .then(user=>{
           if(user){
               if(bcrypt.compareSync(req.body.password, user.password)){
-                  const payload = {
-                      _id : user._id,
-                      name: user.name,
-                      email: user.email,
-                      school_id:user.school_id,
-                      type:user.type
+                const {
+                  password,
+                  clas,
+                  schoolName,
+                  image,
+                  logo,
+                  schoolEmail,
+                  address,
+                  state,
+                  lga,
+                  firstName,
+                  lastName,
+                  ownerEmail,
+                  number,
+                    school_id,
+                    type,
+                    _id
+                } = user  
+                const payload = {
+                  password,
+                  clas,
+                  schoolName,
+                  image,
+                  logo,
+                  schoolEmail,
+                  address,
+                  state,
+                  lga,
+                  firstName,
+                  lastName,
+                  ownerEmail,
+                  number,
+                    school_id,
+                    type,
+                    _id
                   }
                   let token = jwt.sign(payload, key)
                   res.send(token)

@@ -8,7 +8,8 @@ class Login extends Component {
     password:'',
     error:'',
     type:'owner',
-    login:''
+    login:'',
+    schoolEmail:''
   }
   handleChange=e=>{
     this.setState({[e.target.name]:e.target.value})
@@ -16,7 +17,7 @@ class Login extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const user = this.state.type==='owner' ? {
-      email: this.state.email,
+      schoolEmail: this.state.schoolEmail,
       password: this.state.password
     } : {
       login: this.state.login,
@@ -85,12 +86,12 @@ axios.post('/parent/login', user)
         this.state.type==='owner' ?
         <form onSubmit={this.handleSubmit}>
         <div class="form-group">
-        <label for="email">School's Email</label>
+        <label for="schoolEmail">School's Email</label>
         <input class="form-control"
-        id="email"
+        id="schoolEmail"
         type="email"
-         name="email"
-          placeholder="Enter Email"
+         name="schoolEmail"
+          placeholder="Enter School's Email"
           onChange={this.handleChange}/>
         </div>
         <div class="form-group">

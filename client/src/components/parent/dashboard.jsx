@@ -4,150 +4,250 @@ import {connect} from 'react-redux'
 import jwt_decode from 'jwt-decode'
 import {Link} from 'react-router-dom'
 import kR from '../../unnamed.jpg'
+import {getSchool} from '../../actions/ownerActions'
+import PropTypes from 'prop-types'
+import {studentBillDetail} from '../../actions/ownerActions'
+import {teacherInfo} from '../../actions/parentActions'
 class Dashboard extends Component{
 componentDidMount(){
+    const decode = jwt_decode(localStorage.token)
     ptfNotifications()
+    this.props.getSchool()
+    this.props.studentBillDetail(decode.student_id)
+    this.props.teacherInfo(decode.clas)
 }
   render(){
 const decode = jwt_decode(localStorage.token)
-    return(
-            <div class="main-content">
-            <div class="container emp-profile">
-          <form method="post">
-              <div class="row">
-                  <div class="col-md-4">
-                      <div class="profile-img">
-                          <img src={kR} alt=""/>
-
+const {school} = this.props.school
+const {teacher} = this.props.teacher
+const {debtor} = this.props.debtor
+return(
+        <div class="main-content">
+        <div class="section__content section__content--p30">
+        <div class="container-fluid">
+        <div class="row">
+        <div class="col-md-12">
+        <div class="overview-wrap">
+        <h2 class="title-1">Dashboard</h2>
+  
+        </div>
+        <div class="image mx-auto d-block img-cir img-120">
+                          <img  src={school.logo} alt="John Doe"/>
                       </div>
-                  </div>
-                  <div class="col-md-6">
-                      <div class="profile-head">
-                                  <h5>
-                                      {decode.surname+' '+decode.name}
-                                  </h5>
-
-                                  <p class="proile-rating">Age : <span>{decode.age}</span></p>
-
+              <h1 className='text-center'>{school.schoolName}</h1>
+        </div>
+        </div>
+        <br/><hr/>
+        <div className='row'>
+        
+        <div class="col-md-6">
+        <div class="image mx-auto d-block img-cir img-120">
+                          <img  src={decode.image} alt="John Doe"/>
                       </div>
-                  </div>
-
-              </div>
-              <div class="row">
-                  <div class="col-md-4">
-                      <div class="profile-work">
-                          <p>Others</p>
-                          <Link to="/receipts">Receipts</Link><br/>
-                          <Link to="/results">Results</Link><br/>
-                          <Link to="/ptf">Parent's and Teacher's Forum</Link><br/>
-                          <Link to="/chat">Chats with {decode.gender==='Female' ? 'her ' : 'his '}teacher</Link><br/>
-                          <Link to="/shop">Shopping Page</Link><br/>
+        <h1 className='text-center'>Student</h1>
+            <div className='card shadow' style={{borderLeft:'4px solid',borderBottom:'4px solid'}}>
+                <div className='card-body'>
+                <ul class="list-group list-group-flush">
+                                        {
+                                          (decode.department)?(
+                                            <li class="list-group-item">
+                                            <div className='row'>
+                                            <div className='col'>Department:</div>
+                                            <div className='col'>{decode.department}</div>
+                                            </div>
+                                            </li>
+                                          ):(
+                                            <React.Fragment></React.Fragment>
+                                          )
+                                        }
+                                        <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>Student's Identification Number:</div>
+                                            <div className='col'>{decode.student_id}</div>
+                                          </div>
+                                        </li>
+                                          <li class="list-group-item">
+                                            <div className='row'>
+                                              <div className='col'>Gender:</div>
+                                              <div className='col'>{decode.gender}</div>
+                                            </div>
+                                          </li>
+                                          <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>Religion:</div>
+                                            <div className='col'>{decode.religion}</div>
+                                          </div>
+                                          </li>
+                                          <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>Date Of Birth:</div>
+                                            <div className='col'>{decode.date}</div>
+                                          </div>
+                                          </li>
+                                          <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>State Of Origin:</div>
+                                            <div className='col'>{decode.sog}</div>
+                                          </div>
+                                          </li>
+                                          <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>Local Government Area:</div>
+                                            <div className='col'>{decode.lga}</div>
+                                          </div>
+                                          </li>
+                                          <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>Address:</div>
+                                            <div className='col'>{decode.address}</div>
+                                          </div>
+                                          </li>
+                                          <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>Guardian's Name:</div>
+                                            <div className='col'>{decode.pname}</div>
+                                          </div>
+                                          </li>
+                                          <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>Guardian's Surname:</div>
+                                            <div className='col'>{decode.psurname}</div>
+                                          </div>
+                                          </li>
+                                          <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>Email Address:</div>
+                                            <div className='col'>{decode.email}</div>
+                                          </div>
+                                          </li>
+                                          <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>Mobile Number:</div>
+                                            <div className='col'>{decode.number}</div>
+                                          </div>
+                                          </li>
+                                          <li class="list-group-item">
+                                          <div className='row'>
+                                            <div className='col'>Guardian's Address:</div>
+                                            <div className='col'>{decode.paddress}</div>
+                                          </div>
+                                          </li>
+                                      </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+        <div class="image mx-auto d-block img-cir img-120">
+                          <img  src={teacher.image} alt="John Doe"/>
                       </div>
-                  </div>
-                  <div class="col-md-8">
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <label>Identification Number</label>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <p>{decode.student_id}</p>
-                                          </div>
-                                      </div>
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <label>Religion</label>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <p>{decode.religion}</p>
-                                          </div>
-                                      </div>
-                                      {
-                                        (decode.department==='Science' || decode.department==='Art' || decode.department==='Commercial')?(
-                                          <div class="row">
-                                              <div class="col-md-6">
-                                                  <label>Department</label>
-                                              </div>
-                                              <div class="col-md-6">
-                                                  <p>{decode.department}</p>
-                                              </div>
-                                          </div>
-                                        ):(
-                                          <div></div>
-                                        )
-                                      }
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <label>State Of Origin</label>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <p>{decode.sog}</p>
-                                          </div>
-                                      </div>
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <label>Local Government Area</label>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <p>{decode.lga}</p>
-                                          </div>
-                                      </div>
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <label>Residential Address</label>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <p>{decode.address}</p>
-                                          </div>
-                                      </div>
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <label>Guardian's Name</label>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <p>{decode.pname}</p>
-                                          </div>
-                                      </div>
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <label>Guardian's Surname</label>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <p>{decode.psurname}</p>
-                                          </div>
-                                      </div>
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <label>Email</label>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <p>{decode.email}</p>
-                                          </div>
-                                      </div>
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <label>Mobile Number</label>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <p>{decode.number}</p>
-                                          </div>
-                                      </div>
-                                      <div class="row">
-                                          <div class="col-md-6">
-                                              <label>Guardian's Address</label>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <p>{decode.paddress}</p>
-                                          </div>
-                                      </div>
-                          </div>
-              </div>
-          </form>
-      </div>
+        <h1 className='text-center'>Teacher</h1>
+        <div className='card shadow' style={{borderLeft:'4px solid',borderBottom:'4px solid'}}>
+                <div className='card-body'>
+                {
+                    teacher ? 
+                    <ul class="list-group list-group-flush">
+
+
+<li class="list-group-item">
+  <div className='row'>
+    <div className='col'>Gender:</div>
+    <div className='col'>{teacher.gender}</div>
+  </div>
+</li>
+
+
+<li class="list-group-item">
+<div className='row'>
+  <div className='col'>Address:</div>
+  <div className='col'>{teacher.address}</div>
+</div>
+</li>
+
+
+<li class="list-group-item">
+<div className='row'>
+  <div className='col'>Email Address:</div>
+  <div className='col'>{teacher.email}</div>
+</div>
+</li>
+<li class="list-group-item">
+<div className='row'>
+  <div className='col'>Mobile Number:</div>
+  <div className='col'>{teacher.number}</div>
+</div>
+</li>
+
+</ul>
+:
+<div>Teacher not registered Yet</div>
+                }
+                
+                </div>
+        </div>
+        <br/><hr/>
+        <h1 className='text-center'>Debt Status</h1>
+        <div className='card shadow' style={{borderLeft:'4px solid',borderBottom:'4px solid'}}>
+        <div className='card-body'>
+            <div className='row container'>
+                <div className='col'>
+            School fee Status : 
+                </div>
+                <div className='col'>
+                    {debtor.feeStatus}
+                </div>
 
             </div>
-    )
+            <div className='row container'>
+                <div className='col'>
+            School fee : 
+                </div>
+                <div className='col'>
+                    {debtor.fees}
+                </div>
+
+            </div>
+            <div className='row container'>
+                <div className='col'>
+            Amount Paid : 
+                </div>
+                <div className='col'>
+                    {debtor.amountPaid}
+                </div>
+
+            </div>
+            <div className='row container'>
+                <div className='col'>
+            Amount Left : 
+                </div>
+                <div className='col'>
+                    {debtor.fees - debtor.amountPaid}
+                </div>
+
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        </div>
+        </div>
+        </div>
+        )
   }
 }
-
-
-export default connect()(Dashboard)
+Dashboard.propTypes={
+    school:PropTypes.object.isRequired,
+    getSchool:PropTypes.func.isRequired,
+    debtor:PropTypes.object.isRequired,
+    studentBillDetail:PropTypes.func.isRequired,
+    teacherInfo:PropTypes.func.isRequired,
+    teacher: PropTypes.object.isRequired
+}
+const mapStateToProps=state=>{
+    return{
+        school:state.school,
+        debtor:state.debtor,
+        teacher:state.teacher
+    }
+}
+export default connect(mapStateToProps,{getSchool,studentBillDetail,teacherInfo})(Dashboard)

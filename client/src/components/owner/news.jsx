@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {ptfNotifications} from '../../notification'
-import kR from '../../unnamed.jpg'
+import kR from '../upload.png'
 import {connect} from 'react-redux'
 import {getNews, addNews} from '../../actions/ownerActions'
 import jwt_decode from 'jwt-decode'
@@ -9,6 +9,7 @@ import {UploadNotice} from './register'
 import './style.css'
 import io from 'socket.io-client'
 import {Media} from 'react-bootstrap'
+import $ from 'jquery'
 class News extends Component {
 
   componentDidMount() {
@@ -48,18 +49,40 @@ class News extends Component {
       school_id:decode.school_id,
       day,
       month,
-      sender_id: decode._id
+      sender_id: decode._id,
+      image: this.state.image==='no image' ? decode.logo : this.state.image
     }
     this.socket.emit('uploadNotice', info)
     this.handleToggle()
     this.setState({
       title:' ',
       content:' ',
-      msg:'News Upload Successful'
+      msg:'News Upload Successful',
+      image:'no image'
     })
   }
   handleToggle=()=>{
     this.setState({modal:!this.state.modal})
+  }
+  imageUpload=()=>{
+    $('#newImage').click()
+  }
+  uploadImage=async e =>{
+    const files = e.target.files
+    const data = new FormData()
+    data.append('file', files[0])
+    data.append('upload_preset', 'jewbreel')
+    this.setState({imageLoading:true})
+    const res = await fetch('https://api.cloudinary.com/v1_1/jewbreel1/image/upload',
+    {
+      method:'POST',
+      body:data
+    }
+    )
+    const file = await res.json()
+    this.setState({image:file.secure_url})
+    this.setState({imageLoading:false})
+    console.log(file.secure_url)
   }
   render(){
     const NewsItem =({news})=>{
@@ -70,7 +93,7 @@ class News extends Component {
     <img
       width={300}
       height={100}
-      src={kR}
+      src={news.image}
       alt="Generic placeholder"
     />
     </div>
@@ -111,6 +134,9 @@ class News extends Component {
           toggle={this.handleToggle}
           change={this.handleChange}
           state={this.state}
+            kR={kR}
+          upload={this.uploadImage}
+            image={this.imageUpload}
         />
                 <div class="row">
                     <div class="col-lg-10 mx-auto mb-5 mb-lg-0">

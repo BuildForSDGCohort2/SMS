@@ -12,7 +12,7 @@ class Navbar extends Component {
   e.preventDefault()
   }
     render() {
-      const decode = jwt_decode(localStorage.token)
+      const decode = localStorage.token ? jwt_decode(localStorage.token) : null
         return (
             <div>
             <header class="header-mobile d-block d-lg-none">
@@ -34,9 +34,9 @@ class Navbar extends Component {
             </div>
             <div class="account2">
                     <div class="image img-cir img-120">
-                        <img src={kR} alt="John Doe"/>
+                        <img src={decode.logo} alt="John Doe"/>
                     </div>
-                    <h4 class="name">{decode.name}</h4>
+                    <h4 class="name">{decode.schoolName}</h4>
                     <Link onClick={this.logOut}><i class="fas fa-sign-out-alt"/> Sign Out</Link>
                 </div>
             <nav class="navbar-mobile" style={{display: 'none'}}>
@@ -128,9 +128,9 @@ class Navbar extends Component {
             <div class="menu-sidebar__content js-scrollbar1 ps">
             <div class="account2">
                     <div class="image img-cir img-120">
-                        <img src={kR} alt="John Doe"/>
+                        <img src={decode.logo} alt="John Doe"/>
                     </div>
-                    <h4 class="name">{decode.name}</h4>
+                    <h4 class="name">{decode.schoolName}</h4>
                     <Link onClick={this.logOut}><i class="fas fa-sign-out-alt"/> Sign Out</Link>
                 </div>
             <nav class="navbar-sidebar2">

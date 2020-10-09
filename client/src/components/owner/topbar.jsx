@@ -25,23 +25,25 @@ class Topbar extends Component{
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src={kR} alt="John Doe"/>
+                                            <img src={decode.image} alt="John Doe"/>
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#">{decode.name}</a>
+                                            <a class="js-acc-btn" href="#">{decode.firstName+' '+decode.lastName}</a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src={kR} alt="John Doe"/>
+                                                        <img src={decode.image} alt="John Doe"/>
                                                     </a>
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#">{decode.name}</a>
+                                                        <a href="#">{decode.firstName+' '+decode.lastName}</a>
                                                     </h5>
-                                                    <span class="email">{decode.email}</span>
+                                                    <span class="email">{decode.schoolEmail}</span>
+                                                    <br/>
+                                                    <span class="email">{decode.ownerEmail}</span>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,7 +1,11 @@
 import React from 'react'
-export const PrimaryClasses=({clas,value})=>{
+import jwt_decode from 'jwt-decode'
+const decode = localStorage.token ? jwt_decode(localStorage.token) : ''
+const system = decode.clas
+export const RegClasses=({clas,value})=>{
     return(
     <select name="clas" onChange={clas} value={value ? value : null} id="SelectLm" class=" form-control">
+            
                                                        <option>Please select</option>
                                                        <option>Creche</option>
                                                        <option>KG1</option>
@@ -14,23 +18,21 @@ export const PrimaryClasses=({clas,value})=>{
                                                        <option>Basic4</option>
                                                        <option>Basic5</option>
                                                        <option>Basic6</option>
-                                                   </select>
-)}
-export const SecondaryClasses=({clas,value})=>{
-    return(
-    <select name="clas" onChange={clas} value={value ? value : null} id="SelectLm" class=" form-control">
-                                                       <option>Please select</option>
                                                        <option>Jss1</option>
                                                        <option>Jss2</option>
                                                        <option>Jss3</option>
                                                        <option>Sss1</option>
                                                        <option>Sss2</option>
                                                        <option>Sss3</option>
-                                                   </select>
+                                                    
+</select>
 )}
 export const AllClasses=({clas,value})=>{
     return(
-    <select name="clas" onChange={clas} value={value ? value : null} id="SelectLm" class=" form-control">
+        <select name="clas" onChange={clas} value={value ? value : null} id="SelectLm" class=" form-control">
+            {
+                system==='Both' ?
+                <>
                                                        <option>Please select</option>
                                                        <option>Creche</option>
                                                        <option>KG1</option>
@@ -49,7 +51,37 @@ export const AllClasses=({clas,value})=>{
                                                        <option>Sss1</option>
                                                        <option>Sss2</option>
                                                        <option>Sss3</option>
-                                                   </select>
+                                                    </>
+            : system==='Primary' ?
+            <>
+                                                       <option>Please select</option>
+                                                       <option>Creche</option>
+                                                       <option>KG1</option>
+                                                       <option>KG2</option>
+                                                       <option>NUR1</option>
+                                                       <option>NUR2</option>
+                                                       <option>Basic1</option>
+                                                       <option>Basic2</option>
+                                                       <option>Basic3</option>
+                                                       <option>Basic4</option>
+                                                       <option>Basic5</option>
+                                                       <option>Basic6</option>
+                                                       </>
+            :
+            system==='Secondary' ? 
+            <>
+                                                       <option>Please select</option>
+                                                       <option>Jss1</option>
+                                                       <option>Jss2</option>
+                                                       <option>Jss3</option>
+                                                       <option>Sss1</option>
+                                                       <option>Sss2</option>
+                                                       <option>Sss3</option>
+                                                       </>
+                : null
+        }
+</select>
+    
 )}
 export const States=[
     {name:"Abia"},
